@@ -1,0 +1,5 @@
+name = Adress book
+description = adress book module
+core = 7.x
+
+package = Module Dev

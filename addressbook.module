@@ -1,0 +1,60 @@
+<?php
+
+function addressbook_menu() {
+  $items = array();
+
+  $items['admin/content/contacts/add'] = array(
+    'title' => 'Add contact to adress book',
+    'description' => 'Add contact to adress bok with "Adress book" module',
+    'page callback' => 'drupal_get_form',
+    'page arguments' => array('addressbook_add'),
+    'access arguments' => array('administer site configuration'),
+    'file' => 'includes/addressbook.add.inc',
+  );
+
+  $items['admin/content/contacts'] = array(
+    'title' => 'Contacts',
+    'description' => 'List of all contact',
+    'page callback' => 'addressbook_contacts',
+    'access arguments' => array('administer site configuration'),
+    'file' => 'includes/addressbook.contacts.inc',
+    'type' => MENU_LOCAL_TASK,
+  );
+
+  $items['admin/content/contacts/%addressbook_id/edit'] = array(
+    'title' => 'Edit existing contact',
+    'description' => 'You can edit existing contact',
+    'page callback' => 'drupal_get_form',
+    'page arguments' => array('addressbook_add', 3),
+    'access arguments' => array('administer site configuration'),
+    'file' => 'includes/addressbook.add.inc',
+  );
+
+  $items['admin/content/contacts/%addressbook_id/delete'] = array(
+    'title' => 'Delete existing contact',
+    'description' => 'You can Delete existing contact',
+    'page callback' => 'addressbook_delete',
+    'page arguments' => array(3),
+    'access arguments' => array('administer site configuration'),
+    'file' => 'includes/addressbook.delete.inc'
+  );
+
+  $items['admin/content/contacts/%addressbook_id/view'] = array(
+    'title' => 'View all contact post',
+    'description' => 'View all contact post on this page',
+    'page callback' => 'addressbook_view',
+    'page arguments' => array(3),
+    'access arguments' => array('administer site configuration'),
+    'file' => 'includes/addressbook.view.inc',
+  );
+  return $items;
+}
+
+function addressbook_id_load($contact_id) {
+  return  db_select('adressbook_table', 'n')
+    ->fields('n')
+    ->condition('n.addressbook_id', $contact_id)
+    ->execute()
+    ->fetchObject();
+}
+
